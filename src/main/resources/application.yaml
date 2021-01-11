@@ -1,3 +1,7 @@
 spring:
   freemarker:
     suffix: ".ftl"
+  datasource:
+    url: ${URL_DB}
+    username: ${USERNAME_DB}
+    password: ${PASSWORD_DB}
