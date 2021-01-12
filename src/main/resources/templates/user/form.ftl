@@ -7,7 +7,7 @@
 
 <div class="w-100 h-100 d-flex align-items-center justify-content-center">
     <div class="col-md-8">
-        <form method="post" action="/user/new">
+        <form method="post" action="/user/register">
             <h2 class="d-flex justify-content-center">Зареєструватися</h2>
             <div class="form-group">
                 <#if userIsExistsMessage??>

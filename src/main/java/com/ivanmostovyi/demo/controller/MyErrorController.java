@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static java.util.Objects.nonNull;
+
 @Controller
 public class MyErrorController implements ErrorController {
 
@@ -18,7 +20,7 @@ public class MyErrorController implements ErrorController {
 
         model.addAttribute("errorCode", errorCode);
 
-        if (exception != null) {
+        if (nonNull(exception)) {
             model.addAttribute("errorMessage", exception.getMessage());
         }
 

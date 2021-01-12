@@ -4,14 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -19,7 +16,6 @@ import java.util.Collections;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "users")
 public class User implements UserDetails {
 
     @Id
@@ -31,7 +27,7 @@ public class User implements UserDetails {
 
     private UserRole role;
 
-    private boolean lock;
+    private boolean locked;
 
     private boolean active;
 
@@ -47,7 +43,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !lock;
+        return !locked;
     }
 
     @Override

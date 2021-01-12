@@ -2,6 +2,8 @@ spring:
   freemarker:
     suffix: ".ftl"
   datasource:
-    url: ${URL_DB}
-    username: ${USERNAME_DB}
-    password: ${PASSWORD_DB}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/MyGmail}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root}
+server:
+  port: 12345

@@ -2,7 +2,7 @@ package com.ivanmostovyi.demo.service;
 
 import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.domain.UserRole;
-import com.ivanmostovyi.demo.dto.UserDto;
+import com.ivanmostovyi.demo.dto.UserFormDto;
 import com.ivanmostovyi.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,26 +28,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 
     @Override
-    public void create(UserDto userDto) {
+    public void create(UserFormDto userFormDto) {
 
         User user = User.builder()
-                .username(userDto.getUsername())
-                .password(passwordEncoder.encode(userDto.getPassword()))
+                .username(userFormDto.getUsername())
+                .password(passwordEncoder.encode(userFormDto.getPassword()))
                 .role(UserRole.ROLE_USER)
                 .active(true)
-                .lock(false)
+                .locked(false)
                 .build();
 
         userRepository.save(user);
-    }
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -59,6 +56,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         return userRepository.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 }
