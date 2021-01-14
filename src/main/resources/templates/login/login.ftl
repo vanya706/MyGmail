@@ -24,6 +24,9 @@
                 </div>
             </div>
         </form>
+        <form action="/user/register" method="get">
+            <input type="submit" class="btn btn-light m-3" value="У вас ще досі немає аккаунту?"/>
+        </form>
     </div>
 </div>
 

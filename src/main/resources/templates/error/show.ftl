@@ -16,7 +16,7 @@
     <h2>Error message: ${errorMessage}</h2>
 </#if>
 
-<h1><a href="/message/inbox">Go to my messages</a></h1>
+<h1><a href="/messages/inbox">Go to my messages</a></h1>
 
 </body>
 </html>

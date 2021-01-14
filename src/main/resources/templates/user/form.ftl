@@ -21,6 +21,9 @@
                 </div>
             </div>
         </form>
+        <form action="/login" method="get">
+            <input type="submit" class="btn btn-light m-3" value="Уже маєте аккаунт?"/>
+        </form>
     </div>
 </div>
 

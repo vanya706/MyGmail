@@ -4,7 +4,6 @@ import com.ivanmostovyi.demo.dto.UserFormDto;
 import com.ivanmostovyi.demo.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +29,7 @@ public class UserController {
     public String create(UserFormDto userFormDto) {
 
         userService.create(userFormDto);
-        return "redirect:/message/inbox";
+        return "redirect:/messages/inbox";
     }
 
 }
