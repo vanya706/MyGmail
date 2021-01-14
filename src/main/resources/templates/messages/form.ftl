@@ -1,4 +1,4 @@
-<html>
+<html lang="uk">
 <head>
     <#include "../include/coreDependencies.ftl">
     <title>Create user</title>

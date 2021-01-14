@@ -1,32 +1,34 @@
 package com.ivanmostovyi.demo.controller;
 
-import com.ivanmostovyi.demo.domain.Messages;
+import com.ivanmostovyi.demo.domain.Message;
 import com.ivanmostovyi.demo.domain.User;
-import com.ivanmostovyi.demo.dto.MessagesFormDto;
+import com.ivanmostovyi.demo.dto.MessageFormDto;
 import com.ivanmostovyi.demo.service.MessageService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@Controller()
+@Controller
 @RequestMapping("/messages")
-public class MessagesController {
+public class MessageController {
 
     private MessageService messageService;
 
-    public MessagesController(MessageService messageService) {
+    public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
 
     @GetMapping("/inbox")
     public String getMessagesInbox(@AuthenticationPrincipal User user, Model model){
 
-        List<Messages> messagesList = messageService.findAllByReceiverId(user.getId());
+        List<Message> messages = messageService.findAllByReceiverUserId(user.getId());
 
-        model.addAttribute("inboxMessagesList", messagesList);
+        model.addAttribute("inboxMessages", messages);
 
         return "messages/inbox";
     }
@@ -37,10 +39,9 @@ public class MessagesController {
     }
 
     @PostMapping("/new")
-    public String createMessages(@AuthenticationPrincipal User user, MessagesFormDto messagesFormDto){
+    public String createMessages(@AuthenticationPrincipal User user, MessageFormDto messageFormDto){
 
-        messagesFormDto.setUserId(user.getId());
-        messageService.create(messagesFormDto);
+        messageService.create(messageFormDto, user);
         return "redirect:/messages/inbox";
     }
 

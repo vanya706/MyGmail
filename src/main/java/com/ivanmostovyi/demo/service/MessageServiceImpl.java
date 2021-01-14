@@ -1,54 +1,52 @@
 package com.ivanmostovyi.demo.service;
 
-import com.ivanmostovyi.demo.domain.Messages;
+import com.ivanmostovyi.demo.domain.Message;
 import com.ivanmostovyi.demo.domain.User;
-import com.ivanmostovyi.demo.dto.MessagesFormDto;
-import com.ivanmostovyi.demo.repository.MessagesRepository;
+import com.ivanmostovyi.demo.dto.MessageFormDto;
+import com.ivanmostovyi.demo.exception.MessageSendingException;
+import com.ivanmostovyi.demo.repository.MessageRepository;
 import com.ivanmostovyi.demo.repository.UserRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MessageServiceImpl implements MessageService {
 
     private UserRepository userRepository;
 
-    private MessagesRepository messagesRepository;
+    private MessageRepository messageRepository;
 
-    public MessageServiceImpl(UserRepository userRepository, MessagesRepository messagesRepository) {
+    public MessageServiceImpl(UserRepository userRepository, MessageRepository messageRepository) {
         this.userRepository = userRepository;
-        this.messagesRepository = messagesRepository;
+        this.messageRepository = messageRepository;
     }
 
     @Override
-    public void create(MessagesFormDto messagesFormDto){
+    public void create(MessageFormDto messageFormDto, User user){
 
-        Optional<User> receiverUser = userRepository.findByUsername(messagesFormDto.getReceiverUsername());
+        User receiverUser = userRepository.findByUsername(messageFormDto.getReceiverUsername())
+                                          .orElseThrow(() -> new MessageSendingException("Receiver not found!"));
 
-        receiverUser.orElseThrow(() -> new UsernameNotFoundException("Receiver not found!"));
-
-        Messages messages = Messages.builder()
+        Message message = Message.builder()
                 .marked(false)
                 .read(false)
-                .receiverId(receiverUser.get().getId())
-                .title(messagesFormDto.getTitle())
-                .body(messagesFormDto.getBody())
-                .userId(messagesFormDto.getUserId())
+                .receiverUserId(receiverUser.getId())
+                .title(messageFormDto.getTitle())
+                .body(messageFormDto.getBody())
+                .senderUserId(user.getId())
                 .build();
 
-        messagesRepository.save(messages);
+        messageRepository.save(message);
     }
 
     @Override
-    public List<Messages> findAllByUserId(Long id) {
-        return messagesRepository.findAllByUserId(id);
+    public List<Message> findAllBySenderUserId(Long id) {
+        return messageRepository.findAllBySenderUserId(id);
     }
 
     @Override
-    public List<Messages> findAllByReceiverId(Long id) {
-        return messagesRepository.findAllByReceiverId(id);
+    public List<Message> findAllByReceiverUserId(Long id) {
+        return messageRepository.findAllByReceiverUserId(id);
     }
 }

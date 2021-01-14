@@ -1,4 +1,4 @@
-<html>
+<html lang="uk">
 <head>
     <#include "../include/coreDependencies.ftl">
     <title>inbox</title>
@@ -21,14 +21,14 @@
             <aside class="col-3">
                 <div class="list-group">
                     <a href="#"
-                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">messages
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">message
                         which mark special<span class="badge bg-primary rounded-pill">14</span></a>
                     <a href="#"
                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">unread
-                        messages<span class="badge bg-primary rounded-pill">367</span></a>
+                        message<span class="badge bg-primary rounded-pill">367</span></a>
                     <a href="#"
                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">sent
-                        messages<span class="badge bg-primary rounded-pill">32</span></a>
+                        message<span class="badge bg-primary rounded-pill">32</span></a>
                     <a href="#"
                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">bin<span
                                 class="badge bg-primary rounded-pill">3</span></a>
@@ -36,7 +36,7 @@
             </aside>
             <article class="col-9">
                 <div class="rows">
-                    <#list inboxMessagesList as message>
+                    <#list inboxMessages as message>
                         <div class="row border-top">
                             <#if message.marked>
                                 <img src="/icons/baseline_bookmark_black_48dp.png" alt="didn't mark">

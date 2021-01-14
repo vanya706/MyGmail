@@ -1,16 +1,17 @@
 package com.ivanmostovyi.demo.service;
 
-import com.ivanmostovyi.demo.domain.Messages;
-import com.ivanmostovyi.demo.dto.MessagesFormDto;
+import com.ivanmostovyi.demo.domain.Message;
+import com.ivanmostovyi.demo.domain.User;
+import com.ivanmostovyi.demo.dto.MessageFormDto;
 
 import java.util.List;
 
 public interface MessageService {
 
-    void create(MessagesFormDto messagesFormDto);
+    void create(MessageFormDto messageFormDto, User user);
 
-    List<Messages> findAllByUserId(Long id);
+    List<Message> findAllBySenderUserId(Long id);
 
-    List<Messages> findAllByReceiverId(Long id);
+    List<Message> findAllByReceiverUserId(Long id);
 
 }

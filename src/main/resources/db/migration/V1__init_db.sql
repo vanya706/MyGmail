@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS message
     marked              BOOLEAN NOT NULL DEFAULT FALSE,
     title               VARCHAR NOT NULL DEFAULT '',
     body                TEXT    NOT NULL DEFAULT '',
-    receiver_id         SERIAL  NOT NULL,
-    user_id             SERIAL  NOT NULL,
+    receiver_user_id    SERIAL  NOT NULL,
+    sender_user_id      SERIAL  NOT NULL,
     CONSTRAINT message_id_pk PRIMARY KEY(id),
-    CONSTRAINT message_user_id_fk FOREIGN KEY(user_id) REFERENCES "user"(id)
+    CONSTRAINT message_user_id_fk FOREIGN KEY(sender_user_id) REFERENCES "user"(id)
 )

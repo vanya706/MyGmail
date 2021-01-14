@@ -7,14 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessagesFormDto {
+public class MessageFormDto {
 
     private String title;
 
     private String body;
 
     private String receiverUsername;
-
-    private Long userId;
 
 }
