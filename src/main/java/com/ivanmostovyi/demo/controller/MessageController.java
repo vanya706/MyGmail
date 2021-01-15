@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -39,9 +40,13 @@ public class MessageController {
     }
 
     @PostMapping("/new")
-    public String createMessages(@AuthenticationPrincipal User user, MessageFormDto messageFormDto){
+    public String createMessages(@AuthenticationPrincipal User user, MessageFormDto messageFormDto,
+                                 RedirectAttributes redirectAttributes){
 
         messageService.create(messageFormDto, user);
+
+        redirectAttributes.addFlashAttribute("isMessageSentSuccessfully", true);
+
         return "redirect:/messages/inbox";
     }
 

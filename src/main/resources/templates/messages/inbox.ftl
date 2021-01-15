@@ -36,6 +36,11 @@
             </aside>
             <article class="col-9">
                 <div class="rows">
+                    <#if isMessageSentSuccessfully??>
+                        <div class='row rounded ${isMessageSentSuccessfully?then("bg-info", "bg-danger")}'>
+                            Message was ${isMessageSentSuccessfully?then("", "not ")}sent successfully!
+                        </div>
+                    </#if>
                     <#list inboxMessages as message>
                         <div class="row border-top">
                             <#if message.marked>
