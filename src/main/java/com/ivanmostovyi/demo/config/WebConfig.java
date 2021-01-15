@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/","/message/inbox");
+        registry.addRedirectViewController("/","/messages/inbox");
     }
 
     @Bean
