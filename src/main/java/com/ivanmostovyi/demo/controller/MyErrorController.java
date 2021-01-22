@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.ivanmostovyi.demo.util.FlashMessageConstants.FLASH_MESSAGE_ERROR;
 import static java.util.Objects.nonNull;
 
 @Controller
@@ -25,6 +26,16 @@ public class MyErrorController implements ErrorController {
         }
 
         return "error/show";
+    }
+
+    @GetMapping("/messages/send/error")
+    public String handleMessagesSendError(Model model){
+
+        if (model.containsAttribute(FLASH_MESSAGE_ERROR)){
+            return "messages/send/error";
+        }
+
+        return "redirect:/";
     }
 
     @Override
