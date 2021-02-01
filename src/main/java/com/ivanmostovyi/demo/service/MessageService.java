@@ -1,17 +1,19 @@
 package com.ivanmostovyi.demo.service;
 
-import com.ivanmostovyi.demo.domain.Message;
 import com.ivanmostovyi.demo.domain.User;
+import com.ivanmostovyi.demo.dto.MessageDto;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface MessageService {
 
-    void create(MessageFormDto messageFormDto, User user);
+    void create(MessageFormDto messageFormDto, User senderUser);
 
-    List<Message> findAllBySenderUserId(Long id);
+    Page<MessageDto> findAllBySenderUserId(Long id, Pageable pageable);
 
-    List<Message> findAllByReceiverUserId(Long id);
+    Page<MessageDto> findAllByReceiverUserId(Long id, Pageable pageable);
+
+    Page<MessageDto> findAllInOutboxAndInboxByUserIdWhereTitleContaining(Long Id, String title, Pageable pageable);
 
 }
