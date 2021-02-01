@@ -34,10 +34,5 @@
     </ul>
 </div>
 
-<#if isMessageSentSuccessfully?? && isMessageSentSuccessfully == true >
-    <script>
-        alert("Your message was sent!");
-    </script>
-</#if>
 </body>
 </html>

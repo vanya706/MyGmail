@@ -37,19 +37,19 @@ header {
     font-size: 23px;
 }
 
-form.search{
+form.search {
     width: 60%;
     display: flex;
     align-items: center;
 }
 
 .search input,
-.search button{
+.search button {
     background-color: #393e46;
     color: #eeeeee;
 }
 
-.search input{
+.search input {
     width: 100%;
 }
 
@@ -112,6 +112,41 @@ aside {
     font-size: 30px;
     font-weight: 500;
     font-family: "Roboto Light";
+}
+
+#message_sent__text {
+    width: 160px;
+    background-color: #555;
+    color: #eeeeee;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 99%;
+    left: 50%;
+    margin-left: -80px;
+    animation: fadein 3s ease-in 2s;
+}
+
+#message_sent__text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 /* ====== MESSAGE-CONTROLS ====== */
@@ -207,7 +242,7 @@ aside {
 }
 
 .message_item__marks .sender,
-.message_item__marks .receiver{
+.message_item__marks .receiver {
     padding-left: 10px;
 }
 

@@ -6,14 +6,19 @@ import com.ivanmostovyi.demo.exception.MessageSendingException;
 import com.ivanmostovyi.demo.service.MessageService;
 import com.ivanmostovyi.demo.service.UserService;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 
 @Configuration
-public class AsyncConfig implements AsyncConfigurer {
+public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
 
     private ApplicationContext context;
+
+    private MessageService messageService;
+
+    private UserService userService;
 
     public AsyncConfig(ApplicationContext context) {
         this.context = context;
@@ -24,9 +29,6 @@ public class AsyncConfig implements AsyncConfigurer {
         return (throwable, method, objects) -> {
 
             if (throwable instanceof MessageSendingException){
-
-                MessageService messageService = context.getBean(MessageService.class);
-                UserService userService = context.getBean(UserService.class);
 
                 MessageFormDto messageFormDto = (MessageFormDto) objects[0];
                 User user = (User) objects[1];
@@ -41,6 +43,13 @@ public class AsyncConfig implements AsyncConfigurer {
                 );
             }
         };
+    }
+
+    @Override
+    public void run(String... args) {
+
+        this.messageService = context.getBean(MessageService.class);
+        this.userService = context.getBean(UserService.class);
     }
 
 }
