@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -22,6 +24,8 @@ public class Message {
     private String title;
 
     private String body;
+
+    private LocalDateTime date;
 
     private Long receiverUserId;
 

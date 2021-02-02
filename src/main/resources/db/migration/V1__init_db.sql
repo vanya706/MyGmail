@@ -12,13 +12,14 @@ CREATE TABLE IF NOT EXISTS "user"
 
 CREATE TABLE IF NOT EXISTS message
 (
-    id                  SERIAL  NOT NULL,
-    read                BOOLEAN NOT NULL DEFAULT FALSE,
-    marked              BOOLEAN NOT NULL DEFAULT FALSE,
-    title               VARCHAR NOT NULL DEFAULT '',
-    body                TEXT    NOT NULL DEFAULT '',
-    receiver_user_id    SERIAL  NOT NULL,
-    sender_user_id      SERIAL  NOT NULL,
+    id                  SERIAL      NOT NULL,
+    read                BOOLEAN     NOT NULL DEFAULT FALSE,
+    marked              BOOLEAN     NOT NULL DEFAULT FALSE,
+    title               VARCHAR     NOT NULL DEFAULT '',
+    body                TEXT        NOT NULL DEFAULT '',
+    date                TIMESTAMP   NOT NULL,
+    receiver_user_id    SERIAL      NOT NULL,
+    sender_user_id      SERIAL      NOT NULL,
     CONSTRAINT message_id_pk PRIMARY KEY(id),
     CONSTRAINT message_user_id_fk FOREIGN KEY(sender_user_id) REFERENCES "user"(id)
 )

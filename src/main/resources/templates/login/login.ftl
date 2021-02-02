@@ -11,7 +11,7 @@
             <h2 class="d-flex justify-content-center">Увійти</h2>
             <div class="form-group">
                 <#if userLogoutMessage??>
-                    <div class="form-row form-control m-3 alert alert-danger" role="alert">${userLogoutMessage}</div>
+                    <div class="form-row form-control m-3 alert alert-info" role="alert">${userLogoutMessage}</div>
                 </#if>
                 <#if incorrectUsernameOrPasswordMessage??>
                     <div class="form-row form-control m-3 alert alert-danger" role="alert">${incorrectUsernameOrPasswordMessage}</div>

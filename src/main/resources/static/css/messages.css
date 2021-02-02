@@ -1,0 +1,257 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: #eeeeee;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #222831;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+/* ====== HEADER ====== */
+
+header {
+    height: 60px;
+    width: 100%;
+    border-bottom: 1px solid #00adb5;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-logo {
+    width: 175px;
+    padding-left: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 23px;
+}
+
+form.search {
+    width: 60%;
+    display: flex;
+    align-items: center;
+}
+
+.search input,
+.search button {
+    background-color: #393e46;
+    color: #eeeeee;
+}
+
+.search input {
+    width: 100%;
+}
+
+.logout {
+    border: none;
+    background-color: inherit;
+    font-size: 23px;
+    padding: 14px;
+    cursor: pointer;
+}
+
+/* ====== SIDEBAR ====== */
+
+aside {
+    height: calc(100% - 60px);
+    width: 200px;
+    font-size: 16px;
+    border-right: 1px solid #00adb5;
+    padding-top: 15px;
+    position: absolute;
+    left: 0;
+
+    font-family: Arial;
+}
+
+.menu {
+    padding-right: 6px;
+}
+
+.menu li {
+    padding: 3px 6px 3px 26px;
+
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#inbox .menu__inbox,
+#outbox .menu__outbox,
+.menu > li:hover {
+    background-color: #393e46;
+    border-radius: 0 10px 10px 0;
+}
+
+.new_message_btn {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    width: 100px;
+    height: 40px;
+    margin: 0 0 15px 50px;
+    border-radius: 25px;
+    background: #393e46;
+    color: #eeeeee;
+}
+
+.new_message_btn:before {
+    content: "+";
+    font-size: 30px;
+    font-weight: 500;
+    font-family: "Roboto Light";
+}
+
+#message_sent__text {
+    width: 160px;
+    background-color: #555;
+    color: #eeeeee;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 99%;
+    left: 50%;
+    margin-left: -80px;
+    animation: fadein 3s ease-in 2s;
+}
+
+#message_sent__text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* ====== MESSAGE-CONTROLS ====== */
+
+.message_controls {
+    height: 58px;
+    padding: 0 5% 0 10px;
+    width: calc(100% - 200px);
+    border-bottom: 1px solid #00adb5;
+    font-size: 18px;
+    font-family: "Arial";
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    top: 60px;
+    right: 0;
+}
+
+.message_control {
+    padding-left: 5px;
+}
+
+.pagination {
+    width: 190px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-items: center;
+}
+
+.pagination_info {
+    font-size: 16px;
+}
+
+.pagination__change_page {
+    width: 50px;
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;
+}
+
+.pagination a {
+    color: #eeeeee;
+    padding: 6px 10px 8px 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination a:hover {
+    background-color: #393e46;
+}
+
+.pagination a.disable {
+    pointer-events: none;
+    background-color: #222831;
+    color: #393e46;
+}
+
+/* ====== MESSAGES ====== */
+
+.messages_box {
+    width: calc(100% - 200px);
+    height: calc(100% - 60px - 56px);
+    overflow-y: auto;
+    position: absolute;
+    top: 116px;
+    right: 0;
+}
+
+.message_item {
+    border-bottom: 1px solid #00adb5;
+    padding: 10px 10px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.message_item__marks {
+    width: 20%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.message_item__marks * {
+    padding: 0 5px;
+}
+
+.message_item__marks .sender,
+.message_item__marks .receiver {
+    padding-left: 10px;
+}
+
+.message_item .content {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 70%;
+}
+
+.message_item .date {
+    width: 5%;
+}

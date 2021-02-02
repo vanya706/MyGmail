@@ -3,9 +3,9 @@
 <head>
     <#include "../include/meta.ftl">
     <link rel="stylesheet" href="/css/messages.css">
-    <title>inbox</title>
+    <title>search</title>
 </head>
-<body id="inbox">
+<body>
 
 <#include "../include/header.ftl">
 <#include "../include/sidebar.ftl">
@@ -18,16 +18,17 @@
                 <div class="message_item__marks">
                     <span class="checkbox">&#x2610;</span>
                     <span class="mark">${(message.marked) ? then("&#x2605;","&#x2606;")}</span>
-                    <span class="sender">${message.senderUsername}</span>
+                    <span class="sender">From: ${message.senderUsername}</span>
+                    <span class="receiver">To: ${message.receiverUsername}</span>
                 </div>
 
-                <span class="content ${message.read ? then("read","unread")}">
+                <span class="content">
                     ${message.title + " - " + message.body}
                 </span>
                 <span class="date">
-                    ${(message.date.hour?string?length<2) ? then('0'+message.date.hour, message.date.hour+'')}
-                    <span>:</span>
-                    ${(message.date.minute?string?length<2) ? then('0'+message.date.minute, message.date.minute+'')}
+                    ${(message.date.hour?string?length<2) ?
+                    then('0'+message.date.hour, message.date.hour+'')}:${(message.date.minute?string?length<2) ?
+                    then('0'+message.date.minute, message.date.minute+'')}
                 </span>
             </li>
         </#list>
