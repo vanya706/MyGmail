@@ -1,8 +1,9 @@
 package com.ivanmostovyi.demo.controller;
 
 import com.ivanmostovyi.demo.domain.User;
-import com.ivanmostovyi.demo.dto.MessageDto;
+import com.ivanmostovyi.demo.dto.InboxMessageDto;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
+import com.ivanmostovyi.demo.dto.OutboxMessageDto;
 import com.ivanmostovyi.demo.service.MessageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +29,10 @@ public class MessageController {
     }
 
     @GetMapping("/inbox")
-    public String getMessagesInbox(@AuthenticationPrincipal User user, Model model, @PageableDefault(sort = "date",
+    public String getInboxMessages(@AuthenticationPrincipal User user, Model model, @PageableDefault(sort = "date",
             direction = Sort.Direction.DESC) Pageable pageable){
 
-        Page<MessageDto> messagePage = messageService.findAllByReceiverUserId(user.getId(), pageable);
+        Page<InboxMessageDto> messagePage = messageService.findAllInboxMessageByReceiverUserId(user.getId(), pageable);
 
         model.addAttribute("messagePage", messagePage);
 
@@ -39,10 +40,10 @@ public class MessageController {
     }
 
     @GetMapping("/outbox")
-    public String getMessagesOutbox(@AuthenticationPrincipal User user, Model model, @PageableDefault(sort = "date",
+    public String getOutboxMessages(@AuthenticationPrincipal User user, Model model, @PageableDefault(sort = "date",
             direction = Sort.Direction.DESC) Pageable pageable){
 
-        Page<MessageDto> messagePage = messageService.findAllBySenderUserId(user.getId(), pageable);
+        Page<OutboxMessageDto> messagePage = messageService.findAllOutboxMessageBySenderUserId(user.getId(), pageable);
 
         model.addAttribute("messagePage", messagePage);
 
@@ -57,8 +58,7 @@ public class MessageController {
         model.addAttribute("search", search);
         model.addAttribute(
                 "messagePage",
-                messageService
-                        .findAllInOutboxAndInboxByUserIdWhereTitleContaining(user.getId(), search, pageable)
+                messageService.findAllInboxMessageByReceiverUserIdWhereTitleContaining(user.getId(), search, pageable)
         );
 
         return "messages/search";

@@ -35,8 +35,8 @@ public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
 
                 messageService.create(
                         messageFormDto.toBuilder()
-                                .title(throwable.getMessage())
-                                .body("Message wasn't delivered to user: " + messageFormDto.getReceiverUsername())
+                                .title("Message was not delivered!")
+                                .body(throwable.getMessage())
                                 .receiverUsername(user.getUsername())
                                 .build(),
                         userService.findByUsername("Gmail Support")
