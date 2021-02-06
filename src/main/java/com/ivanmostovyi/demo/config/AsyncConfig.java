@@ -25,6 +25,13 @@ public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
     }
 
     @Override
+    public void run(String... args) {
+
+        this.messageService = context.getBean(MessageService.class);
+        this.userService = context.getBean(UserService.class);
+    }
+
+    @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return (throwable, method, objects) -> {
 
@@ -43,13 +50,6 @@ public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
                 );
             }
         };
-    }
-
-    @Override
-    public void run(String... args) {
-
-        this.messageService = context.getBean(MessageService.class);
-        this.userService = context.getBean(UserService.class);
     }
 
 }

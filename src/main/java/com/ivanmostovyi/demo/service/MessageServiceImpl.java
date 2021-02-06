@@ -6,7 +6,6 @@ import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.dto.InboxMessageDto;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
 import com.ivanmostovyi.demo.dto.OutboxMessageDto;
-import com.ivanmostovyi.demo.exception.MessageSendingException;
 import com.ivanmostovyi.demo.repository.InboxMessageRepository;
 import com.ivanmostovyi.demo.repository.OutboxMessageRepository;
 import com.ivanmostovyi.demo.repository.UserRepository;
@@ -76,8 +75,17 @@ public class MessageServiceImpl implements MessageService {
         outboxMessageRepository.save(outboxMessage);
 
         if (!notFoundUsernames.isEmpty()) {
-            throw new MessageSendingException(String.format("%d receivers not found: %s",
-                    notFoundUsernames.size(), String.join(", ", notFoundUsernames)));
+
+            createInboxMessage(
+                    messageFormDto.toBuilder()
+                            .title("Message was not delivered!")
+                            .body(String.format("To %d receivers, not found: %s",
+                                    notFoundUsernames.size(), String.join(", ", notFoundUsernames)))
+                            .receiverUsername(senderUser.getUsername())
+                            .build(),
+                    senderUser,
+                    userRepository.findByUsername("Gmail Support").orElseThrow(RuntimeException::new)
+            );
         }
     }
 
