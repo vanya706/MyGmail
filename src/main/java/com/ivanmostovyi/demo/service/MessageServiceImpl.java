@@ -79,7 +79,7 @@ public class MessageServiceImpl implements MessageService {
             createInboxMessage(
                     messageFormDto.toBuilder()
                             .title("Message was not delivered!")
-                            .body(String.format("To %d receivers, not found: %s",
+                            .body(String.format("To %d receiver(s), not found: %s",
                                     notFoundUsernames.size(), String.join(", ", notFoundUsernames)))
                             .receiverUsername(senderUser.getUsername())
                             .build(),
