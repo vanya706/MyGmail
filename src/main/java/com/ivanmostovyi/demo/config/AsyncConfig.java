@@ -1,53 +1,23 @@
 package com.ivanmostovyi.demo.config;
 
-import com.ivanmostovyi.demo.domain.User;
-import com.ivanmostovyi.demo.dto.MessageFormDto;
 import com.ivanmostovyi.demo.exception.MessageSendingException;
-import com.ivanmostovyi.demo.service.MessageService;
-import com.ivanmostovyi.demo.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 
+@Slf4j
 @Configuration
-public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
-
-    private ApplicationContext context;
-
-    private MessageService messageService;
-
-    private UserService userService;
-
-    public AsyncConfig(ApplicationContext context) {
-        this.context = context;
-    }
-
-    @Override
-    public void run(String... args) {
-
-        this.messageService = context.getBean(MessageService.class);
-        this.userService = context.getBean(UserService.class);
-    }
+public class AsyncConfig implements AsyncConfigurer {
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return (throwable, method, objects) -> {
 
-            if (throwable instanceof MessageSendingException){
-
-                MessageFormDto messageFormDto = (MessageFormDto) objects[0];
-                User user = (User) objects[1];
-
-                messageService.create(
-                        messageFormDto.toBuilder()
-                                .title("Message was not delivered!")
-                                .body(throwable.getMessage())
-                                .receiverUsername(user.getUsername())
-                                .build(),
-                        userService.findByUsername("Gmail Support")
-                );
+            if (throwable instanceof MessageSendingException) {
+                log.error("Error while submission processing", throwable);
+            } else {
+                log.trace("Trace exception while message async submission processing", throwable);
             }
         };
     }
