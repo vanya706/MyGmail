@@ -6,7 +6,6 @@ import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.dto.InboxMessageDto;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
 import com.ivanmostovyi.demo.dto.OutboxMessageDto;
-import com.ivanmostovyi.demo.exception.MessageSendingException;
 import com.ivanmostovyi.demo.repository.InboxMessageRepository;
 import com.ivanmostovyi.demo.repository.OutboxMessageRepository;
 import com.ivanmostovyi.demo.repository.UserRepository;
@@ -19,8 +18,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -50,19 +47,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Async
     @Override
-    public void create(MessageFormDto messageFormDto, User senderUser) {
-
-        String[] receiverUsernames = messageFormDto.getReceiverUsername().split(" ");
-
-        List<User> receiverUsers = new ArrayList<>();
-        List<String> notFoundUsernames = new ArrayList<>();
-
-        Arrays.stream(receiverUsernames).forEach(
-                username -> userRepository.findByUsername(username)
-                        .ifPresentOrElse(receiverUsers::add, () -> notFoundUsernames.add(username))
-        );
-
-        receiverUsers.forEach(receiverUser -> createInboxMessage(messageFormDto, receiverUser, senderUser));
+    public void createOutboxMessage(MessageFormDto messageFormDto, String[] receiverUsernames, User senderUser) {
 
         OutboxMessage outboxMessage = OutboxMessage.builder()
                 .marked(false)
@@ -74,26 +59,11 @@ public class MessageServiceImpl implements MessageService {
                 .build();
 
         outboxMessageRepository.save(outboxMessage);
-
-        if (!notFoundUsernames.isEmpty()) {
-
-            User gmail_support = userRepository.findByUsername("Gmail Support")
-                    .orElseThrow(() -> new MessageSendingException("Sender with name \"Gmail Support\" was not found"));
-
-            createInboxMessage(
-                    messageFormDto.toBuilder()
-                            .title("Message was not delivered!")
-                            .body(String.format("To %d receiver(s), not found: %s",
-                                    notFoundUsernames.size(), String.join(", ", notFoundUsernames)))
-                            .receiverUsername(senderUser.getUsername())
-                            .build(),
-                    senderUser,
-                    gmail_support
-            );
-        }
     }
 
-    private void createInboxMessage(MessageFormDto messageFormDto, User receiverUser, User senderUser) {
+    @Async
+    @Override
+    public void createInboxMessage(MessageFormDto messageFormDto, User receiverUser, User senderUser) {
 
         InboxMessage inboxMessage = InboxMessage.builder()
                 .marked(false)

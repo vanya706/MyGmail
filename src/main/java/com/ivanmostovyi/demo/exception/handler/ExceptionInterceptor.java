@@ -16,7 +16,7 @@ public class ExceptionInterceptor {
     public String handleMessageSendingException(MessageSendingException messageSendingException,
                                                 RedirectAttributes redirectAttributes){
 
-        log.error("Error while submission processing", messageSendingException);
+        log.trace("Error while submission processing", messageSendingException);
 
         redirectAttributes.addFlashAttribute(FLASH_MESSAGE_ERROR, messageSendingException.getMessage());
 

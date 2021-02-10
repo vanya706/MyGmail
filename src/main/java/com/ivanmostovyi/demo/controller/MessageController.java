@@ -4,6 +4,7 @@ import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.dto.InboxMessageDto;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
 import com.ivanmostovyi.demo.dto.OutboxMessageDto;
+import com.ivanmostovyi.demo.service.MessageSendService;
 import com.ivanmostovyi.demo.service.MessageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +25,11 @@ public class MessageController {
 
     private MessageService messageService;
 
-    public MessageController(MessageService messageService) {
+    private MessageSendService messageSendService;
+
+    public MessageController(MessageService messageService, MessageSendService messageSendService) {
         this.messageService = messageService;
+        this.messageSendService = messageSendService;
     }
 
     @GetMapping("/inbox")
@@ -70,10 +74,10 @@ public class MessageController {
     }
 
     @PostMapping("/new")
-    public String createMessages(@AuthenticationPrincipal User user, MessageFormDto messageFormDto,
+    public String sendMessages(@AuthenticationPrincipal User user, MessageFormDto messageFormDto,
                                  RedirectAttributes redirectAttributes){
 
-        messageService.create(messageFormDto, user);
+        messageSendService.sendMessages(messageFormDto, user);
 
         redirectAttributes.addFlashAttribute("isMessageSentSuccessfully", true);
 

@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface MessageService {
 
-    void create(MessageFormDto messageFormDto, User senderUser);
+    void createInboxMessage(MessageFormDto messageFormDto, User receiverUser, User senderUser);
+
+    void createOutboxMessage(MessageFormDto messageFormDto, String[] receiverUsernames, User senderUser);
 
     Page<OutboxMessageDto> findAllOutboxMessageBySenderUserId(Long id, Pageable pageable);
 
