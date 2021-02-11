@@ -16,7 +16,7 @@ public class ExceptionInterceptor {
     public String handleMessageSendingException(MessageSendingException messageSendingException,
                                                 RedirectAttributes redirectAttributes){
 
-        log.trace("Error while submission processing", messageSendingException);
+        log.error("Error while submission processing", messageSendingException);
 
         redirectAttributes.addFlashAttribute(FLASH_MESSAGE_ERROR, messageSendingException.getMessage());
 
@@ -26,7 +26,7 @@ public class ExceptionInterceptor {
     @ExceptionHandler(Exception.class)
     public String unhandledException(Exception e){
 
-        log.trace("Thrown unchecked exception", e);
+        log.error("Thrown unchecked exception", e);
 
         return "redirect:/";
     }

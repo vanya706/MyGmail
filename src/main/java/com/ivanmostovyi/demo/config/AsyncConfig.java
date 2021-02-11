@@ -36,7 +36,7 @@ public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return (throwable, method, objects) -> {
 
-            log.trace("Exception thrown", throwable);
+            log.error("Exception thrown", throwable);
 
             if (method.getName().equals("createInboxMessage")){
 

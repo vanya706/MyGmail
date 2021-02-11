@@ -51,7 +51,7 @@ public class MessageSendServiceImpl implements MessageSendService {
 
         if (!notFoundUsernames.isEmpty()) {
 
-            User gmail_support = userRepository.findByUsername("Gmail Support")
+            User gmailSupportUser = userRepository.findByUsername("Gmail Support")
                     .orElseThrow(() -> new MessageSendingException("Sender with name \"Gmail Support\" was not found"));
 
             messageService.createInboxMessage(
@@ -62,7 +62,7 @@ public class MessageSendServiceImpl implements MessageSendService {
                             .receiverUsername(senderUser.getUsername())
                             .build(),
                     senderUser,
-                    gmail_support
+                    gmailSupportUser
             );
         }
     }
