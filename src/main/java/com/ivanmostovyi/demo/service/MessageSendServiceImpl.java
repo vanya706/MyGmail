@@ -2,7 +2,6 @@ package com.ivanmostovyi.demo.service;
 
 import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
-import com.ivanmostovyi.demo.exception.MessageSendingException;
 import com.ivanmostovyi.demo.repository.UserRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class MessageSendServiceImpl implements MessageSendService {
 
         String[] receiverUsernames = messageFormDto.getReceiverUsername().split(" ");
 
-        messageService.createOutboxMessage(messageFormDto, receiverUsernames, senderUser);
+        messageService.createOutboxMessage(messageFormDto, receiverUsernames, senderUser.getId());
 
         List<User> receiverUsers = new ArrayList<>();
         List<String> notFoundUsernames = new ArrayList<>();
@@ -45,14 +44,11 @@ public class MessageSendServiceImpl implements MessageSendService {
 
         receiverUsers.forEach(
                 receiverUser -> messageService.createInboxMessage(
-                        messageFormDto, receiverUser, senderUser
+                        messageFormDto, receiverUser.getId(), senderUser.getId()
                 )
         );
 
         if (!notFoundUsernames.isEmpty()) {
-
-            User gmailSupportUser = userRepository.findByUsername("Gmail Support")
-                    .orElseThrow(() -> new MessageSendingException("Sender with name \"Gmail Support\" was not found"));
 
             messageService.createInboxMessage(
                     messageFormDto.toBuilder()
@@ -61,8 +57,8 @@ public class MessageSendServiceImpl implements MessageSendService {
                                     notFoundUsernames.size(), String.join(", ", notFoundUsernames)))
                             .receiverUsername(senderUser.getUsername())
                             .build(),
-                    senderUser,
-                    gmailSupportUser
+                    senderUser.getId(),
+                    messageService.GMAIL_SUPPORT_ID
             );
         }
     }

@@ -2,7 +2,6 @@ package com.ivanmostovyi.demo.service;
 
 import com.ivanmostovyi.demo.domain.InboxMessage;
 import com.ivanmostovyi.demo.domain.OutboxMessage;
-import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.dto.InboxMessageDto;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
 import com.ivanmostovyi.demo.dto.OutboxMessageDto;
@@ -47,14 +46,14 @@ public class MessageServiceImpl implements MessageService {
 
     @Async
     @Override
-    public void createOutboxMessage(MessageFormDto messageFormDto, String[] receiverUsernames, User senderUser) {
+    public void createOutboxMessage(MessageFormDto messageFormDto, String[] receiverUsernames, Long senderUserId) {
 
         OutboxMessage outboxMessage = OutboxMessage.builder()
                 .marked(false)
                 .receiverUsernames(receiverUsernames)
                 .title(messageFormDto.getTitle())
                 .body(messageFormDto.getBody())
-                .senderUserId(senderUser.getId())
+                .senderUserId(senderUserId)
                 .date(LocalDateTime.now())
                 .build();
 
@@ -63,15 +62,15 @@ public class MessageServiceImpl implements MessageService {
 
     @Async
     @Override
-    public void createInboxMessage(MessageFormDto messageFormDto, User receiverUser, User senderUser) {
+    public void createInboxMessage(MessageFormDto messageFormDto, Long receiverUserId, Long senderUserId) {
 
         InboxMessage inboxMessage = InboxMessage.builder()
                 .marked(false)
                 .read(false)
-                .receiverUserId(receiverUser.getId())
+                .receiverUserId(receiverUserId)
                 .title(messageFormDto.getTitle())
                 .body(messageFormDto.getBody())
-                .senderUserId(senderUser.getId())
+                .senderUserId(senderUserId)
                 .date(LocalDateTime.now())
                 .build();
 

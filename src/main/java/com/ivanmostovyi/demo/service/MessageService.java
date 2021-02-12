@@ -1,6 +1,5 @@
 package com.ivanmostovyi.demo.service;
 
-import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.dto.InboxMessageDto;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
 import com.ivanmostovyi.demo.dto.OutboxMessageDto;
@@ -9,9 +8,11 @@ import org.springframework.data.domain.Pageable;
 
 public interface MessageService {
 
-    void createInboxMessage(MessageFormDto messageFormDto, User receiverUser, User senderUser);
+    Long GMAIL_SUPPORT_ID = 1L;
 
-    void createOutboxMessage(MessageFormDto messageFormDto, String[] receiverUsernames, User senderUser);
+    void createInboxMessage(MessageFormDto messageFormDto, Long receiverUserId, Long senderUserId);
+
+    void createOutboxMessage(MessageFormDto messageFormDto, String[] receiverUsernames, Long senderUserId);
 
     Page<OutboxMessageDto> findAllOutboxMessageBySenderUserId(Long id, Pageable pageable);
 
