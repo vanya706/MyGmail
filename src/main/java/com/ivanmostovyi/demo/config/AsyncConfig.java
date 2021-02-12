@@ -51,7 +51,7 @@ public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
                                 .receiverUsername(senderUser.getUsername())
                                 .build(),
                         senderUser,
-                        userService.findByUsername(context.getEnvironment().getProperty("admin.default.username"))
+                        userService.findByUsername("Gmail Support")
                 );
             }
         };

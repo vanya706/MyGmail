@@ -1,7 +1,6 @@
 package com.ivanmostovyi.demo.repository;
 
 import com.ivanmostovyi.demo.domain.User;
-import com.ivanmostovyi.demo.domain.UserRole;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -14,7 +13,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
     List<User> findAll();
-
-    boolean existsByRole(UserRole role);
 
 }

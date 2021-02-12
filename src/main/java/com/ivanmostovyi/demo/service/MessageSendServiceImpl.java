@@ -4,7 +4,6 @@ import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
 import com.ivanmostovyi.demo.exception.MessageSendingException;
 import com.ivanmostovyi.demo.repository.UserRepository;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +19,10 @@ public class MessageSendServiceImpl implements MessageSendService {
 
     private UserRepository userRepository;
 
-    private Environment environment;
-
-    public MessageSendServiceImpl(MessageService messageService,
-                                  UserRepository userRepository,
-                                  Environment environment) {
+    public MessageSendServiceImpl(MessageService messageService, UserRepository userRepository) {
 
         this.messageService = messageService;
         this.userRepository = userRepository;
-        this.environment = environment;
     }
 
     @Async
@@ -57,11 +51,8 @@ public class MessageSendServiceImpl implements MessageSendService {
 
         if (!notFoundUsernames.isEmpty()) {
 
-            String adminUsername = environment.getProperty("admin.default.username");
-
-            User adminUser = userRepository.findByUsername(adminUsername)
-                    .orElseThrow(() -> new MessageSendingException(
-                            String.format("Admin with username \"%s\" was not found", adminUsername)));
+            User gmailSupportUser = userRepository.findByUsername("Gmail Support")
+                    .orElseThrow(() -> new MessageSendingException("Sender with name \"Gmail Support\" was not found"));
 
             messageService.createInboxMessage(
                     messageFormDto.toBuilder()
@@ -71,7 +62,7 @@ public class MessageSendServiceImpl implements MessageSendService {
                             .receiverUsername(senderUser.getUsername())
                             .build(),
                     senderUser,
-                    adminUser
+                    gmailSupportUser
             );
         }
     }
