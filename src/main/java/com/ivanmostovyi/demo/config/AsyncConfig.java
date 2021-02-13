@@ -3,6 +3,7 @@ package com.ivanmostovyi.demo.config;
 import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
 import com.ivanmostovyi.demo.service.MessageService;
+import com.ivanmostovyi.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.boot.CommandLineRunner;
@@ -18,12 +19,16 @@ public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
 
     private MessageService messageService;
 
+    private UserService userService;
+
     public AsyncConfig(ApplicationContext context) {
         this.context = context;
     }
 
     @Override
     public void run(String... args) {
+
+        this.userService = context.getBean(UserService.class);
         this.messageService = context.getBean(MessageService.class);
     }
 
@@ -46,7 +51,7 @@ public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
                                 .receiverUsername(senderUser.getUsername())
                                 .build(),
                         senderUser.getId(),
-                        messageService.GMAIL_SUPPORT_ID
+                        userService.findByUsername(messageService.GMAIL_SUPPORT_USERNAME).getId()
                 );
             }
         };

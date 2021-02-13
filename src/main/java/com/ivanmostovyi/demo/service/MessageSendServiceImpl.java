@@ -58,7 +58,7 @@ public class MessageSendServiceImpl implements MessageSendService {
                             .receiverUsername(senderUser.getUsername())
                             .build(),
                     senderUser.getId(),
-                    messageService.GMAIL_SUPPORT_ID
+                    userRepository.findByUsername(messageService.GMAIL_SUPPORT_USERNAME).get().getId()
             );
         }
     }

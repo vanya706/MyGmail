@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface MessageService {
 
-    Long GMAIL_SUPPORT_ID = 1L;
+    String GMAIL_SUPPORT_USERNAME = "MyGmail Support Team";
 
     void createInboxMessage(MessageFormDto messageFormDto, Long receiverUserId, Long senderUserId);
 
