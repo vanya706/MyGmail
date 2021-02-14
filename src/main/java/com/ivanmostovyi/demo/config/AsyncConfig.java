@@ -2,15 +2,16 @@ package com.ivanmostovyi.demo.config;
 
 import com.ivanmostovyi.demo.domain.User;
 import com.ivanmostovyi.demo.dto.MessageFormDto;
-import com.ivanmostovyi.demo.exception.MessageSendingException;
 import com.ivanmostovyi.demo.service.MessageService;
 import com.ivanmostovyi.demo.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 
+@Slf4j
 @Configuration
 public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
 
@@ -25,31 +26,35 @@ public class AsyncConfig implements AsyncConfigurer, CommandLineRunner {
     }
 
     @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (throwable, method, objects) -> {
+    public void run(String... args) {
 
-            if (throwable instanceof MessageSendingException){
-
-                MessageFormDto messageFormDto = (MessageFormDto) objects[0];
-                User user = (User) objects[1];
-
-                messageService.create(
-                        messageFormDto.toBuilder()
-                                .title(throwable.getMessage())
-                                .body("Message wasn't delivered to user: " + messageFormDto.getReceiverUsername())
-                                .receiverUsername(user.getUsername())
-                                .build(),
-                        userService.findByUsername("Gmail Support")
-                );
-            }
-        };
+        this.userService = context.getBean(UserService.class);
+        this.messageService = context.getBean(MessageService.class);
     }
 
     @Override
-    public void run(String... args) {
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return (throwable, method, objects) -> {
 
-        this.messageService = context.getBean(MessageService.class);
-        this.userService = context.getBean(UserService.class);
+            log.error("Exception thrown", throwable);
+
+            if (method.getName().equals("createInboxMessage")){
+
+                MessageFormDto messageFormDto = (MessageFormDto) objects[0];
+                User receiverUser = (User) objects[1];
+                User senderUser = (User) objects[2];
+
+                messageService.createInboxMessage(
+                        messageFormDto.toBuilder()
+                                .title("Message was not delivered! To user: " + receiverUser.getUsername())
+                                .body(throwable.getMessage())
+                                .receiverUsername(senderUser.getUsername())
+                                .build(),
+                        senderUser.getId(),
+                        userService.findByUsername(messageService.GMAIL_SUPPORT_USERNAME).getId()
+                );
+            }
+        };
     }
 
 }

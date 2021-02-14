@@ -54,6 +54,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        if (username.equals(MessageService.GMAIL_SUPPORT_USERNAME)){
+            throw new UsernameNotFoundException("Tried to login with forbidden username: " + username);
+        }
+
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }

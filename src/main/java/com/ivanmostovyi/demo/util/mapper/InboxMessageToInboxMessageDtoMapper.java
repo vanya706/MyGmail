@@ -1,8 +1,8 @@
 package com.ivanmostovyi.demo.util.mapper;
 
-import com.ivanmostovyi.demo.domain.Message;
+import com.ivanmostovyi.demo.domain.InboxMessage;
 import com.ivanmostovyi.demo.domain.User;
-import com.ivanmostovyi.demo.dto.MessageDto;
+import com.ivanmostovyi.demo.dto.InboxMessageDto;
 import com.ivanmostovyi.demo.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -10,33 +10,33 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class MessageToMessageDtoMapper {
+public class InboxMessageToInboxMessageDtoMapper {
 
     private UserRepository userRepository;
 
-    public MessageToMessageDtoMapper(UserRepository userRepository) {
+    public InboxMessageToInboxMessageDtoMapper(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public List<MessageDto> map(List<Message> messages) {
+    public List<InboxMessageDto> map(List<InboxMessage> inboxMessages) {
 
         List<User> users = userRepository.findAll();
 
-        return messages.stream()
+        return inboxMessages.stream()
                 .map(msg -> map(msg, findUserById(
                         users, msg.getReceiverUserId()),findUserById(users, msg.getSenderUserId())))
                 .collect(Collectors.toList());
     }
 
-    private MessageDto map(Message message, User receiverUser, User senderUser) {
-        return MessageDto.builder()
+    private InboxMessageDto map(InboxMessage inboxMessage, User receiverUser, User senderUser) {
+        return InboxMessageDto.builder()
                 .receiverUsername(receiverUser.getUsername())
                 .senderUsername(senderUser.getUsername())
-                .title(message.getTitle())
-                .body(message.getBody())
-                .date(message.getDate())
-                .marked(message.isMarked())
-                .read(message.isRead())
+                .title(inboxMessage.getTitle())
+                .body(inboxMessage.getBody())
+                .date(inboxMessage.getDate())
+                .marked(inboxMessage.isMarked())
+                .read(inboxMessage.isRead())
                 .build();
     }
 

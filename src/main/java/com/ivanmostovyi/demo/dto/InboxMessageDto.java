@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageDto {
+public class InboxMessageDto {
 
     private Long id;
 

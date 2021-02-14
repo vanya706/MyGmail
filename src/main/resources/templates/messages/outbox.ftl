@@ -18,7 +18,8 @@
                 <div class="message_item__marks">
                     <span class="checkbox">&#x2610;</span>
                     <span class="mark">${(message.marked) ? then("&#x2605;","&#x2606;")}</span>
-                    <span class="receiver">To: ${message.receiverUsername}</span>
+                    <span class="receiver">To: <#list message.receiverUsernames as receiverUsername>
+                            ${receiverUsername + receiverUsername_has_next?then(", ", "")}</#list></span>
                 </div>
 
                 <span class="content">
